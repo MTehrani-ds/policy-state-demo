@@ -236,6 +236,7 @@ def next_reply(practice_name: str, user_text: str, state: SessionState) -> tuple
 # ---------------------------
 
 app = FastAPI(title="Policy+StateMachine Demo Backend", version="0.1.0")
+
 @app.get("/", response_class=HTMLResponse)
 def chat_ui():
     with open("chat.html", "r", encoding="utf-8") as f:
