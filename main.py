@@ -14,11 +14,12 @@ POSTMAN:
   POST http://localhost:8000/webchat/message
   Body (JSON): see example at bottom.
 """
+from __future__ import annotations
 import logging
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from __future__ import annotations
+
 from fastapi.responses import HTMLResponse
 from enum import Enum
 from typing import Any, Dict, Optional
