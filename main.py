@@ -14,9 +14,9 @@ POSTMAN:
   POST http://localhost:8000/webchat/message
   Body (JSON): see example at bottom.
 """
-from fastapi.responses import HTMLResponse
-from __future__ import annotations
 
+from __future__ import annotations
+from fastapi.responses import HTMLResponse
 from enum import Enum
 from typing import Any, Dict, Optional
 
