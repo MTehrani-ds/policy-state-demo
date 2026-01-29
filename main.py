@@ -14,6 +14,9 @@ POSTMAN:
   POST http://localhost:8000/webchat/message
   Body (JSON): see example at bottom.
 """
+import logging
+from fastapi import Request
+from fastapi.responses import JSONResponse
 
 from __future__ import annotations
 from fastapi.responses import HTMLResponse
@@ -268,6 +271,14 @@ def webchat_message(payload: IncomingMessage) -> OutgoingMessage:
 def reset_session(session_id: str) -> Dict[str, Any]:
     SESSION_DB.pop(session_id, None)
     return {"ok": True, "session_id": session_id}
+  
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    logging.exception("Unhandled server error")
+    return JSONResponse(
+        status_code=500,
+        content={"error": "internal_error", "detail": str(exc)},
+    )
 
 
 """
