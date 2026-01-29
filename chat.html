@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Clinic Chat Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f5f5; }
+    .chat { max-width: 500px; margin: 40px auto; background:#fff; border-radius:8px; padding:15px; }
+    .msg { margin: 8px 0; }
+    .user { text-align: right; color:#333; }
+    .bot { text-align: left; color:#0a58ca; }
+    input { width: 80%; padding:8px; }
+    button { padding:8px 12px; }
+  </style>
+</head>
+<body>
+
+<div class="chat">
+  <h3>Clinic Chat</h3>
+  <div id="messages"></div>
+
+  <input id="input" placeholder="Type your message…" />
+  <button onclick="send()">Send</button>
+</div>
+
+<script>
+const sessionId = "demo_customer";
+
+async function send() {
+  const input = document.getElementById("input");
+  const text = input.value;
+  if (!text) return;
+
+  add("user", text);
+  input.value = "";
+
+  const res = await fetch("/webchat/message", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      session_id: sessionId,
+      user_message: text,
+      practice_name: "Example Dental Clinic"
+    })
+  });
+
+  const data = await res.json();
+  add("bot", data.reply);
+}
+
+function add(role, text) {
+  const div = document.createElement("div");
+  div.className = "msg " + role;
+  div.innerText = text;
+  document.getElementById("messages").appendChild(div);
+}
+</script>
+
+</body>
+</html>
