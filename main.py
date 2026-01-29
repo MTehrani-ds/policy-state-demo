@@ -14,7 +14,7 @@ POSTMAN:
   POST http://localhost:8000/webchat/message
   Body (JSON): see example at bottom.
 """
-
+from fastapi.responses import HTMLResponse
 from __future__ import annotations
 
 from enum import Enum
@@ -173,11 +173,11 @@ def next_reply(practice_name: str, user_text: str, state: SessionState) -> tuple
 
         missing = []
         if not state.collected.name:
-            missing.append("name")
+            missing.end("name")
         if not state.collected.phone:
-            missing.append("phone number")
+            missing.end("phone number")
         if not state.collected.best_time:
-            missing.append("best time to call")
+            missing.end("best time to call")
 
         if missing:
             ask = ", ".join(missing)
@@ -204,11 +204,11 @@ def next_reply(practice_name: str, user_text: str, state: SessionState) -> tuple
 
         missing = []
         if not state.collected.name:
-            missing.append("name")
+            missing.end("name")
         if not state.collected.phone:
-            missing.append("phone number")
+            missing.end("phone number")
         if not state.collected.best_time:
-            missing.append("best time to call")
+            missing.end("best time to call")
 
         if missing:
             return (
@@ -232,10 +232,14 @@ def next_reply(practice_name: str, user_text: str, state: SessionState) -> tuple
 
 
 # ---------------------------
-# FastAPI app
+# FastAPI 
 # ---------------------------
 
 app = FastAPI(title="Policy+StateMachine Demo Backend", version="0.1.0")
+@app.get("/", response_class=HTMLResponse)
+def chat_ui():
+    with open("chat.html", "r", encoding="utf-8") as f:
+        return f.read()
 
 
 @app.get("/health")
